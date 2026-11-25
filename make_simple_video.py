@@ -11,25 +11,30 @@ os.makedirs("demo_out", exist_ok=True)
 SHOTS = [
     {
         "id": "shot_1",
-        "duration": 5,
-        "prompt": "Warm sunrise over misty green hills in Ethiopia, cinematic film grain, 1970s vintage photo style",
-        "text": "Every family carries a story that begins before we are born."
+        "duration": 3,
+        "prompt": "Two young Ethiopian friends working late at night on a laptop with glowing code and AI video frames, warm desk lamp, cinematic",
+        "text": "ሳሚ፣ አብረን የጀመርነውን ይህን የኤአይ ፕሮጀክት ተስፋ ቆርጠህ አትተወው።",
+        "subtitle_en": "Sami, don't lose hope and quit this AI project we started together."
     },
     {
         "id": "shot_2",
-        "duration": 5,
-        "prompt": "Close up of traditional clay coffee pot jebena steaming on a wooden table, warm morning light, cinematic",
-        "text": "Over morning coffee, my grandmother finally told me hers."
+        "duration": 3,
+        "prompt": "Close up of hands typing on a laptop keyboard at night, warm coffee cup next to it, cinematic golden lighting",
+        "text": "አሁን መተኛት ሳይሆን ትንሽ ታግሰን መሞከር ነው ያለብን።",
+        "subtitle_en": "Right now isn't the time to sleep—it's time to be patient and keep trying."
     },
     {
         "id": "shot_3",
-        "duration": 5,
-        "prompt": "An old handwritten letter and vintage brass key resting beside a window, soft golden hour light",
-        "text": "It started with a single letter that changed everything."
+        "duration": 3,
+        "prompt": "Sunrise breaking over Addis Ababa city skyline from a window, hopeful warm morning light, cinematic film style",
+        "text": "ተነስ ሳሚ፣ ትልቁን ስኬት አብረን እንሰራዋለን!",
+        "subtitle_en": "Wake up Sami, we will build something great together!"
     }
 ]
 
-VOICE = "en-US-AndrewNeural"  # Change to "am-ET-AmehaNeural" for Amharic!
+
+# VOICE = "en-US-AndrewNeural"  # Change to "am-ET-AmehaNeural" for Amharic!
+VOICE = "am-ET-AmehaNeural"  # Change to "am-ET-AmehaNeural" for Amharic!
 
 
 async def generate_narration():
@@ -47,18 +52,18 @@ async def generate_narration():
     print("1. Narration and subtitles created.")
 
 
-# POLLINATIONS_KEY = "sk_QYIY5K4PdvvfxEAPzrVYvfZn0miED5YJ"
+POLLINATIONS_KEY = "sk_QYIY5K4PdvvfxEAPzrVYvfZn0miED5YJ"
 
 
-# def generate_images():
-#     for shot in SHOTS:
-#         encoded = urllib.parse.quote(shot["prompt"])
-#         url = f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=1280&height=720&key={POLLINATIONS_KEY}"
-#         response = requests.get(url, timeout=60)
-#         response.raise_for_status()
-#         with open(f"demo_out/{shot['id']}.jpg", "wb") as f:
-#             f.write(response.content)
-#         print(f"2. Image generated: {shot['id']}.jpg")
+def generate_images():
+    for shot in SHOTS:
+        encoded = urllib.parse.quote(shot["prompt"])
+        url = f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=1280&height=720&key={POLLINATIONS_KEY}"
+        response = requests.get(url, timeout=60)
+        response.raise_for_status()
+        with open(f"demo_out/{shot['id']}.jpg", "wb") as f:
+            f.write(response.content)
+        print(f"2. Image generated: {shot['id']}.jpg")
 
 
 def animate_shots():
@@ -98,6 +103,6 @@ def assemble_video():
 
 if __name__ == "__main__":
     asyncio.run(generate_narration())
-    # generate_images()
+    generate_images()
     animate_shots()
     assemble_video()
