@@ -47,18 +47,18 @@ async def generate_narration():
     print("1. Narration and subtitles created.")
 
 
-POLLINATIONS_KEY = "sk_QYIY5K4PdvvfxEAPzrVYvfZn0miED5YJ"
+# POLLINATIONS_KEY = "sk_QYIY5K4PdvvfxEAPzrVYvfZn0miED5YJ"
 
 
-def generate_images():
-    for shot in SHOTS:
-        encoded = urllib.parse.quote(shot["prompt"])
-        url = f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=1280&height=720&key={POLLINATIONS_KEY}"
-        response = requests.get(url, timeout=60)
-        response.raise_for_status()
-        with open(f"demo_out/{shot['id']}.jpg", "wb") as f:
-            f.write(response.content)
-        print(f"2. Image generated: {shot['id']}.jpg")
+# def generate_images():
+#     for shot in SHOTS:
+#         encoded = urllib.parse.quote(shot["prompt"])
+#         url = f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=1280&height=720&key={POLLINATIONS_KEY}"
+#         response = requests.get(url, timeout=60)
+#         response.raise_for_status()
+#         with open(f"demo_out/{shot['id']}.jpg", "wb") as f:
+#             f.write(response.content)
+#         print(f"2. Image generated: {shot['id']}.jpg")
 
 
 def animate_shots():
@@ -77,27 +77,24 @@ def animate_shots():
 
 
 def assemble_video():
-    # Create concat list
-    with open("demo_out/list.txt", "w") as f:
+    with open("demo_out/list.txt", "w", encoding="utf-8") as f:
         for shot in SHOTS:
             f.write(f"file '{shot['id']}.mp4'\n")
 
-    # Join clips + add voice + burn subtitles
     cmd = [
         "ffmpeg", "-y",
         "-f", "concat", "-safe", "0", "-i", "demo_out/list.txt",
         "-i", "demo_out/voice.mp3",
-        "-vf", "subtitles=demo_out/subs.srt:force_style='FontSize=22,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=3'",
-        "-c:v", "libx264", "-c:a", "aac", "-shortest",
+        "-vf", "subtitles=demo_out/subs.srt:force_style=FontSize=22\\,PrimaryColour=&H00FFFFFF\\,OutlineColour=&H00000000\\,BorderStyle=3",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest",
         "demo_out/final_test.mp4"
     ]
-    subprocess.run(cmd, stdout=subprocess.DEVNULL,
-                   stderr=subprocess.DEVNULL, check=True)
+    subprocess.run(cmd, check=True)
     print("4. Done! Watch demo_out/final_test.mp4")
 
 
 if __name__ == "__main__":
     asyncio.run(generate_narration())
-    generate_images()
+    # generate_images()
     animate_shots()
     assemble_video()
