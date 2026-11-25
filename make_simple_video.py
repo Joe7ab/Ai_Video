@@ -40,7 +40,7 @@ async def generate_narration():
         async for chunk in communicate.stream():
             if chunk["type"] == "audio":
                 audio_file.write(chunk["data"])
-            elif chunk["type"] == "WordBoundary":
+            elif chunk["type"] in ("WordBoundary", "SentenceBoundary"):
                 submaker.feed(chunk)
     with open("demo_out/subs.srt", "w", encoding="utf-8") as sub_file:
         sub_file.write(submaker.get_srt())
@@ -84,11 +84,14 @@ def assemble_video():
     cmd = [
         "ffmpeg", "-y",
         "-f", "concat", "-safe", "0", "-i", "demo_out/list.txt",
-        "-i", "demo_out/voice.mp3",
-        "-vf", "subtitles=demo_out/subs.srt:force_style=FontSize=22\\,PrimaryColour=&H00FFFFFF\\,OutlineColour=&H00000000\\,BorderStyle=3",
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest",
-        "demo_out/final_test.mp4"
+        "-i", "demo_out/voice.mp3"
     ]
+
+    if os.path.exists("demo_out/subs.srt") and os.path.getsize("demo_out/subs.srt") > 0:
+        cmd += ["-vf", "subtitles=demo_out/subs.srt:force_style=FontSize=22\\,PrimaryColour=&H00FFFFFF\\,OutlineColour=&H00000000\\,BorderStyle=3"]
+
+    cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a",
+            "aac", "-shortest", "demo_out/final_test.mp4"]
     subprocess.run(cmd, check=True)
     print("4. Done! Watch demo_out/final_test.mp4")
 
