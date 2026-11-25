@@ -47,13 +47,17 @@ async def generate_narration():
     print("1. Narration and subtitles created.")
 
 
+POLLINATIONS_KEY = "sk_QYIY5K4PdvvfxEAPzrVYvfZn0miED5YJ"
+
+
 def generate_images():
     for shot in SHOTS:
         encoded = urllib.parse.quote(shot["prompt"])
-        url = f"https://pollinations.ai{encoded}?width=1280&height=720&nologo=true"
-        img_data = requests.get(url, timeout=60).content
+        url = f"https://gen.pollinations.ai/image/{encoded}?model=flux&width=1280&height=720&key={POLLINATIONS_KEY}"
+        response = requests.get(url, timeout=60)
+        response.raise_for_status()
         with open(f"demo_out/{shot['id']}.jpg", "wb") as f:
-            f.write(img_data)
+            f.write(response.content)
         print(f"2. Image generated: {shot['id']}.jpg")
 
 
