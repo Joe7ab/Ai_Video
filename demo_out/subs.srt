@@ -1,12 +1,4 @@
 1
-00:00:00,100 --> 00:00:03,612
-Every family carries a story that begins before we are born.
-
-2
-00:00:03,562 --> 00:00:07,025
-Over morning coffee, my grandmother finally told me hers.
-
-3
-00:00:07,025 --> 00:00:09,950
-It started with a single letter that changed everything.
+00:00:00,100 --> 00:00:10,012
+ሳሚ፣ አብረን የጀመርነውን ይህን የኤአይ ፕሮጀክት ተስፋ ቆርጠህ አትተወው። አሁን መተኛት ሳይሆን ትንሽ ታግሰን መሞከር ነው ያለብን። ተነስ ሳሚ፣ ትልቁን ስኬት አብረን እንሰራዋለን!
 
